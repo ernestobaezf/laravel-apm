@@ -2,6 +2,7 @@
 namespace LaravelAPM\logger;
 
 
+use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Facades\Config;
 use LaravelAPM\logger\storage\File;
 use LaravelAPM\logger\storage\Elastic;
@@ -21,12 +22,13 @@ class Saver
      */
     public static function factory()
     {
-        switch (Config::get('laravel_apm.save.handler')) {
+        $config = Config::get('laravelAPM');
+        switch ($config['save.handler']) {
             case 'file':
-                return new File(Config::get('laravel_apm.save.handler.filename'));
+                return new File($config['save.handler.filename']);
             case 'elastic':
             default:
-                $client = Elasticsearch\ClientBuilder::create()->setHosts(Config::get('laravel_apm.hosts'))->build();
+                $client = ClientBuilder::create()->setHosts($config['hosts'])->build();
                 return new Elastic($client);
         }
     }

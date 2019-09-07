@@ -9,21 +9,21 @@ class Indexer
 {
     public static function createIndex()
     {
-        $config = Config::all();
+        $config = Config::get('laravelAPM');
         $profileMapping = new ProfileMapping();
         $params = [
-            'index' => $config['laravel_apm.es.index'],
+            'index' => $config['es.index'],
             'body' => [
                 'settings' => [
                     'number_of_shards' => 3,
                 ],
                 'mappings' => [
-                    $config['laravel_apm.es.type'] => $profileMapping->getMapping()
+                    $config['es.type'] => $profileMapping->getMapping()
                 ],
             ],
         ];
         try {
-            $esClient = ClientBuilder::create()->setHosts($config['laravel_apm.hosts'])->build();
+            $esClient = ClientBuilder::create()->setHosts($config['hosts'])->build();
             $res = $esClient->indices()->create($params);
             echo json_encode($res);
         } catch (\Exception $e) {

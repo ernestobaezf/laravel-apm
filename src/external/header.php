@@ -113,7 +113,8 @@ register_shutdown_function(
             $requestTimeFloat[1] = 0;
         }
 
-        if (Config::get('save.handler') === 'file') {
+        $config = Config::get('laravelAPM');
+        if ($config["save.handler"] === 'file') {
             $requestTs = array('sec' => $time, 'usec' => 0);
             $requestTsMicro = array('sec' => $requestTimeFloat[0], 'usec' => $requestTimeFloat[1]);
         } else {

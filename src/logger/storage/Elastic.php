@@ -26,7 +26,7 @@ class Elastic implements StorageInterface
             return;
         }
         try {
-            $config = Config::all();
+            $config = Config::get("laravelAPM");
             $bulkParams = [];
             foreach ($dataArray as $fieldArr) {
                 $bulkParams['body'][] = [

@@ -16,7 +16,7 @@ class Util
      */
     public static function simpleUrl($url)
     {
-        $callable = Config::get('laravel_apm.profiler.simple_url');
+        $callable = Config::get('laravelAPM')['profiler.simple_url'];
         if (is_callable($callable)) {
             return call_user_func($callable, $url);
         }
