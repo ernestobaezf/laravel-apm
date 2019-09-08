@@ -26,13 +26,12 @@ class Elastic implements StorageInterface
             return;
         }
         try {
-            $config = Config::get("laravelAPM");
             $bulkParams = [];
             foreach ($dataArray as $fieldArr) {
                 $bulkParams['body'][] = [
                     'index' => [
-                        '_index' => $config['es.index'],
-                        '_type' => $config['es.type']
+                        '_index' => Config::get('laravelAPM.es.index'),
+                        '_type' => Config::get('laravelAPM.es.type')
                     ]
                 ];
                 $bulkParams['body'][] = $fieldArr;
@@ -40,7 +39,7 @@ class Elastic implements StorageInterface
 
             $this->client->bulk($bulkParams);
         } catch (Exception $ex) {
-            error_log('xhgui indexing - ' . $ex->getMessage());
+            report($ex);
         }
     }
 

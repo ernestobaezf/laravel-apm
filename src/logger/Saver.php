@@ -22,13 +22,12 @@ class Saver
      */
     public static function factory()
     {
-        $config = Config::get('laravelAPM');
-        switch ($config['save.handler']) {
+        switch (Config::get('laravelAPM.save.handler')) {
             case 'file':
-                return new File($config['save.handler.filename']);
+                return new File(Config::get('laravelAPM.save.handler.filename'));
             case 'elastic':
             default:
-                $client = ClientBuilder::create()->setHosts($config['hosts'])->build();
+                $client = ClientBuilder::create()->setHosts(Config::get('laravelAPM.hosts'))->build();
                 return new Elastic($client);
         }
     }

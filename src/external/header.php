@@ -113,8 +113,7 @@ register_shutdown_function(
             $requestTimeFloat[1] = 0;
         }
 
-        $config = Config::get('laravelAPM');
-        if ($config["save.handler"] === 'file') {
+        if (Config::get('laravelAPM.save.handler') === 'file') {
             $requestTs = array('sec' => $time, 'usec' => 0);
             $requestTsMicro = array('sec' => $requestTimeFloat[0], 'usec' => $requestTimeFloat[1]);
         } else {
@@ -135,7 +134,7 @@ register_shutdown_function(
             $saver = Saver::factory();
             $saver->save($data);
         } catch (Exception $e) {
-            error_log('xhgui - ' . $e->getMessage());
+            report($e);
         }
     }
 );
